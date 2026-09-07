@@ -38,7 +38,10 @@ await build({
 
 await build({
   entryPoints: {
-    "content/gmail-content": path.join(appDir, "src", "content", "gmail-content.ts")
+    "content/gmail-content": path.join(appDir, "src", "content", "gmail-content.ts"),
+    "content/outlook-content": path.join(appDir, "src", "content", "outlook-content.ts"),
+    "content/yahoo-content": path.join(appDir, "src", "content", "yahoo-content.ts"),
+    "content/proton-content": path.join(appDir, "src", "content", "proton-content.ts")
   },
   bundle: true,
   outdir: outDir,
@@ -47,6 +50,20 @@ await build({
   target: "chrome120",
   logLevel: "silent"
 });
+
+for (const platform of ["outlook", "yahoo", "proton"]) {
+  await build({
+    entryPoints: {
+      [`content/${platform}-content`]: path.join(appDir, "src", "content", `${platform}-content.ts`)
+    },
+    bundle: true,
+    outdir: outDir,
+    platform: "browser",
+    format: "iife",
+    target: "chrome120",
+    logLevel: "silent"
+  });
+}
 
 await cp(path.join(appDir, "src", "ui", "banner.css"), path.join(outDir, "ui", "banner.css"));
 await cp(path.join(appDir, "src", "popup", "popup.html"), path.join(outDir, "popup", "popup.html"));
@@ -57,9 +74,11 @@ for (const size of [16, 32, 48, 128]) {
   );
 }
 
-const contentScript = await readFile(path.join(outDir, "content", "gmail-content.js"), "utf8");
-if (/(^|\n)\s*(import|export)\s/m.test(contentScript)) {
-  throw new Error("Chrome content script build must not contain top-level import/export syntax.");
+for (const scriptName of ["gmail-content", "outlook-content", "yahoo-content", "proton-content"]) {
+  const contentScript = await readFile(path.join(outDir, "content", `${scriptName}.js`), "utf8");
+  if (/(^|\n)\s*(import|export)\s/m.test(contentScript)) {
+    throw new Error(`Chrome content script build must not contain top-level import/export syntax: ${scriptName}`);
+  }
 }
 
 const manifest = JSON.parse(await readFile(path.join(appDir, "manifest.json"), "utf8"));

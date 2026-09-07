@@ -1,8 +1,8 @@
 import {
-  activateOpenGmailTabs,
-  hasGmailPermission,
-  registerGmailProtection,
-  requestGmailPermission,
+  activateOpenMailTabs,
+  hasMailPermission,
+  registerMailProtection,
+  requestMailPermission,
   type ExtensionChromeApi
 } from "../background/permissions.js";
 
@@ -20,9 +20,9 @@ export interface PopupView {
 export function popupViewForState(state: PopupState): PopupView {
   if (state === "ready") {
     return {
-      buttonLabel: "Gmail warnings are on",
+      buttonLabel: "Mail warnings are on",
       buttonDisabled: true,
-      statusText: "Ready. Suspicious sender rows will show a warning inside Gmail.",
+      statusText: "Ready. Suspicious senders will show a warning inside Gmail, Outlook, Yahoo Mail, and Proton Mail.",
       statusState: "ready"
     };
   }
@@ -31,7 +31,7 @@ export function popupViewForState(state: PopupState): PopupView {
     return {
       buttonLabel: "Turning on...",
       buttonDisabled: true,
-      statusText: "Opening Chrome's Gmail access prompt.",
+      statusText: "Opening Chrome's mail access prompt.",
       statusState: "needs-permission"
     };
   }
@@ -40,27 +40,27 @@ export function popupViewForState(state: PopupState): PopupView {
     return {
       buttonLabel: "Try again",
       buttonDisabled: false,
-      statusText: "Gmail warnings are off. Nothing changes until you allow Gmail access.",
+      statusText: "Mail warnings are off. Nothing changes until you allow access.",
       statusState: "denied"
     };
   }
 
   return {
-    buttonLabel: "Turn on Gmail warnings",
+    buttonLabel: "Turn on mail warnings",
     buttonDisabled: false,
-    statusText: "Gmail warnings are off until you allow Gmail access.",
+    statusText: "Mail warnings are off until you allow access to Gmail, Outlook, Yahoo Mail, and Proton Mail.",
     statusState: "needs-permission"
   };
 }
 
-export async function enableGmailProtection(api: ExtensionChromeApi): Promise<PopupState> {
-  const granted = await requestGmailPermission(api.permissions);
+export async function enableMailProtection(api: ExtensionChromeApi): Promise<PopupState> {
+  const granted = await requestMailPermission(api.permissions);
   if (!granted) {
     return "denied";
   }
 
-  await registerGmailProtection(api.scripting);
-  await activateOpenGmailTabs(api);
+  await registerMailProtection(api.scripting);
+  await activateOpenMailTabs(api);
   return "ready";
 }
 
@@ -77,17 +77,17 @@ function render(view: PopupView): void {
 
 async function init(): Promise<void> {
   render(popupViewForState("busy"));
-  const hasPermission = await hasGmailPermission(chrome.permissions);
+  const hasPermission = await hasMailPermission(chrome.permissions);
   if (hasPermission) {
-    await registerGmailProtection(chrome.scripting);
-    await activateOpenGmailTabs(chrome);
+    await registerMailProtection(chrome.scripting);
+    await activateOpenMailTabs(chrome);
   }
   const initialState: PopupState = hasPermission ? "ready" : "needs-permission";
   render(popupViewForState(initialState));
 
   document.querySelector<HTMLButtonElement>("#enable-gmail")?.addEventListener("click", async () => {
     render(popupViewForState("busy"));
-    render(popupViewForState(await enableGmailProtection(chrome)));
+    render(popupViewForState(await enableMailProtection(chrome)));
   });
 }
 

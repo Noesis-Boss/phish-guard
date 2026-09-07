@@ -2,8 +2,16 @@ import { describe, expect, it } from "vitest";
 import manifest from "../manifest.json" with { type: "json" };
 
 describe("Chrome extension manifest permissions", () => {
-  it("uses a narrow optional Gmail host permission", () => {
-    expect(manifest.optional_host_permissions).toEqual(["https://mail.google.com/*"]);
+  it("uses narrow optional host permissions for each supported mail platform", () => {
+    expect(manifest.optional_host_permissions).toEqual([
+      "https://mail.google.com/*",
+      "https://outlook.office.com/*",
+      "https://outlook.office365.com/*",
+      "https://outlook.live.com/*",
+      "https://mail.yahoo.com/*",
+      "https://mail.proton.me/*",
+      "https://mail.protonmail.com/*"
+    ]);
     expect(manifest.permissions).toEqual(["scripting"]);
   });
 
