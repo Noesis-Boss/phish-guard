@@ -1,0 +1,4 @@
+# False positive 2026-09-07: a phrase in the 005 plan doc (about login prompts and
+# scheduling invites) trips the generic-api-key rule on the substring "api".
+# Pre-existing upstream doc text, not a secret.
+docs/plans/2026-06-14-005-feat-browser-link-phishing-protection-plan.md:generic-api-key:67

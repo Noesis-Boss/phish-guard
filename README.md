@@ -24,9 +24,9 @@ Currently, Phish Guard uses Chrome's manual extension install flow. It is a litt
 4. Turn on **Developer mode**.
 5. Click **Load unpacked**.
 6. Select the unzipped folder that contains `manifest.json`.
-7. Open your mail site (Gmail, Outlook, Yahoo Mail, or Proton Mail), click the Phish Guard toolbar icon, and choose **Turn on mail warnings**.
+7. Open your mail site (Gmail, Outlook, Yahoo Mail, or Proton Mail), click the Phish Guard toolbar icon, and choose **Turn on Gmail warnings**.
 
-Chrome asks for `mail.google.com` access so Phish Guard can check the open message and add the warning banner. A Chrome Web Store version is planned if the alpha goes well.
+Chrome asks for `mail.google.com` access so Phish Guard can check the open message and add the warning banner. Multi-platform support (Outlook, Yahoo Mail, Proton Mail) is included in the build and uses the same permission-first flow; the alpha release zip is currently Gmail-focused. A Chrome Web Store version is planned if the alpha goes well.
 
 If Chrome shows extension errors later, go back to `chrome://extensions`, click **Reload** on Phish Guard, and refresh Gmail.
 
