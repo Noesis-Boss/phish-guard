@@ -39,6 +39,12 @@ Phish Guard checks the sender name, sender email address, subject, visible messa
 
 If the evidence looks suspicious, Phish Guard adds a warning banner inside the message view. Each platform has its own small reader that knows how to find the open message on that site; the detection logic is shared. Everything runs locally in your browser; there is no server, account, analytics, or email upload.
 
+Gmail, Outlook, Yahoo Mail, and Proton Mail are supported today.
+
+### Other webmail providers
+
+Because each platform has its own reader, new ones can be added without touching the detection logic. Any webmail that renders messages in the page (Zoho, Fastmail, Roundcube, self-hosted webmail) can be supported with a small per-platform file that locates the open message's sender, subject, and body in that site's HTML. If you use a provider not listed here, open an issue with the message-view HTML (redact personal details) and a reader can be added.
+
 ## Private and local first
 
 Phish Guard checks only the message you have open. It looks at the sender, subject, visible words, and links in that message.
