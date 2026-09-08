@@ -25,12 +25,6 @@
     "scripting"
   ],
   "optional_host_permissions": [
-    "https://mail.google.com/*",
-    "https://outlook.office.com/*",
-    "https://outlook.office365.com/*",
-    "https://outlook.live.com/*",
-    "https://mail.yahoo.com/*",
-    "https://mail.proton.me/*",
-    "https://mail.protonmail.com/*"
+    "https://*/*"
   ]
 }
