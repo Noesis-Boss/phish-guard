@@ -88,13 +88,14 @@ describe("Chrome extension store readiness", () => {
     expect(readme).toContain("## How to contribute");
     expect(readme).toContain("Eventually I want this extension to work across other phishing attempts. Contributions are welcome.");
     expect(readme).toContain("Chrome Web Store");
-    expect(readme).toContain("https://github.com/petergyang/phish-guard/releases/download/v0.2.5-alpha/phish-guard-chrome-extension.zip");
     expect(readme).toContain("docs/assets/readme/chrome-extension-setup.svg");
-    expect(readme).toContain("phish-guard-chrome-extension.zip");
     expect(readme).toContain("chrome://extensions");
     expect(readme).toContain("Developer mode");
     expect(readme).toContain("Load unpacked");
-    expect(readme).toContain("Turn on Gmail warnings");
+    expect(readme).toContain("Turn on mail warnings");
+    expect(readme).toContain("Outlook");
+    expect(readme).toContain("Yahoo Mail");
+    expect(readme).toContain("Proton Mail");
     expect(readme).toContain("contains `manifest.json`");
     expect(readme).toContain("Currently, Phish Guard uses Chrome's manual extension install flow.");
     expect(readme).not.toContain("add the approved listing URL here before public announcement");

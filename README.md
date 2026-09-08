@@ -4,6 +4,8 @@ Phish Guard is a free Chrome extension that warns you inside Gmail, Outlook, Yah
 
 It runs locally on your computer, does not upload your email, and does not require an account.
 
+> This is a maintained fork of [petergyang/phish-guard](https://github.com/petergyang/phish-guard) with multi-platform support: warnings now work in Outlook, Yahoo Mail, and Proton Mail alongside Gmail.
+
 ## Enough with the phishing emails
 
 ![Phish Guard warning for an HBO impersonation email](docs/assets/readme/phish-guard-example.png)
@@ -18,29 +20,28 @@ Currently, Phish Guard uses Chrome's manual extension install flow. It is a litt
 
 ![Chrome extension setup screen](docs/assets/readme/chrome-extension-setup.svg)
 
-1. [Download `phish-guard-chrome-extension.zip`](https://github.com/petergyang/phish-guard/releases/download/v0.2.5-alpha/phish-guard-chrome-extension.zip).
-2. Unzip the file.
-3. Open Chrome and go to `chrome://extensions`.
-4. Turn on **Developer mode**.
-5. Click **Load unpacked**.
-6. Select the unzipped folder that contains `manifest.json`.
-7. Open your mail site (Gmail, Outlook, Yahoo Mail, or Proton Mail), click the Phish Guard toolbar icon, and choose **Turn on Gmail warnings**.
+1. Download this repository (Code → Download ZIP) and unzip it, or run `npm run build` in `apps/chrome-extension` to produce `dist/chrome-extension`.
+2. Open Chrome and go to `chrome://extensions`.
+3. Turn on **Developer mode**.
+4. Click **Load unpacked**.
+5. Select the folder that contains `manifest.json`.
+6. Open your mail site (Gmail, Outlook, Yahoo Mail, or Proton Mail), click the Phish Guard toolbar icon, and choose **Turn on mail warnings**.
 
-Chrome asks for `mail.google.com` access so Phish Guard can check the open message and add the warning banner. Multi-platform support (Outlook, Yahoo Mail, Proton Mail) is included in the build and uses the same permission-first flow; the alpha release zip is currently Gmail-focused. A Chrome Web Store version is planned if the alpha goes well.
+Chrome asks for webmail access so Phish Guard can check the open message and add the warning banner. Access is granted per platform in the popup; nothing runs on a mail site until you allow it. A Chrome Web Store version is planned if the alpha goes well.
 
-If Chrome shows extension errors later, go back to `chrome://extensions`, click **Reload** on Phish Guard, and refresh Gmail.
+If Chrome shows extension errors later, go back to `chrome://extensions`, click **Reload** on Phish Guard, and refresh your mail tab.
 
 ## How Phish Guard works
 
-When you turn on Gmail warnings, Chrome gives Phish Guard permission to run on `mail.google.com`. The extension watches the Gmail message view and reads only the message you have open.
+When you turn on mail warnings, Chrome gives Phish Guard permission to run on the mail sites you allow. The extension watches the message view and reads only the message you have open.
 
 Phish Guard checks the sender name, sender email address, subject, visible message text, and links. It compares what the email claims to be with where it actually came from.
 
-If the evidence looks suspicious, Phish Guard adds a warning banner inside Gmail. Everything runs locally in your browser; there is no server, account, analytics, or email upload.
+If the evidence looks suspicious, Phish Guard adds a warning banner inside the message view. Each platform has its own small reader that knows how to find the open message on that site; the detection logic is shared. Everything runs locally in your browser; there is no server, account, analytics, or email upload.
 
 ## Private and local first
 
-Phish Guard checks only the Gmail message you have open. It looks at the sender, subject, visible words, and links in that message.
+Phish Guard checks only the message you have open. It looks at the sender, subject, visible words, and links in that message.
 
 It does **not**:
 
