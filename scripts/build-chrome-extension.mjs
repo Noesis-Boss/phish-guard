@@ -41,7 +41,8 @@ await build({
     "content/gmail-content": path.join(appDir, "src", "content", "gmail-content.ts"),
     "content/outlook-content": path.join(appDir, "src", "content", "outlook-content.ts"),
     "content/yahoo-content": path.join(appDir, "src", "content", "yahoo-content.ts"),
-    "content/proton-content": path.join(appDir, "src", "content", "proton-content.ts")
+    "content/proton-content": path.join(appDir, "src", "content", "proton-content.ts"),
+    "content/custom-content": path.join(appDir, "src", "content", "custom-content.ts")
   },
   bundle: true,
   outdir: outDir,
@@ -74,7 +75,7 @@ for (const size of [16, 32, 48, 128]) {
   );
 }
 
-for (const scriptName of ["gmail-content", "outlook-content", "yahoo-content", "proton-content"]) {
+for (const scriptName of ["gmail-content", "outlook-content", "yahoo-content", "proton-content", "custom-content"]) {
   const contentScript = await readFile(path.join(outDir, "content", `${scriptName}.js`), "utf8");
   if (/(^|\n)\s*(import|export)\s/m.test(contentScript)) {
     throw new Error(`Chrome content script build must not contain top-level import/export syntax: ${scriptName}`);

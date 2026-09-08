@@ -109,6 +109,86 @@
         color: #8a4b00;
       }
 
+      .custom {
+        border-top: 1px solid #dadce0;
+        margin-top: 14px;
+        padding-top: 12px;
+      }
+
+      .custom-label {
+        color: #5f6368;
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .custom-row {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .custom-row input {
+        border: 1px solid #d8dee9;
+        border-radius: 6px;
+        flex: 1;
+        font-size: 13px;
+        min-width: 0;
+        padding: 8px 10px;
+      }
+
+      .custom-row button {
+        margin-top: 0;
+        width: auto;
+      }
+
+      .custom-status {
+        border-radius: 6px;
+        font-size: 12px;
+        margin-top: 8px;
+        padding: 8px;
+      }
+
+      .custom-status[data-ok="true"] {
+        background: #e6f4ea;
+        color: #137333;
+      }
+
+      .custom-status[data-ok="false"] {
+        background: #fef7e0;
+        color: #8a4b00;
+      }
+
+      .custom-sites {
+        list-style: none;
+        margin: 8px 0 0;
+        padding: 0;
+      }
+
+      .custom-sites li {
+        align-items: center;
+        display: flex;
+        gap: 8px;
+        justify-content: space-between;
+        margin-top: 6px;
+      }
+
+      .custom-sites span {
+        font-size: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .custom-sites button {
+        background: #f1f3f4;
+        color: #3f454b;
+        font-size: 12px;
+        margin-top: 0;
+        min-height: 30px;
+        width: auto;
+      }
+
       .note {
         border-top: 1px solid #dadce0;
         color: #5f6368;
@@ -139,7 +219,87 @@
           color: #8ab4f8;
         }
 
-        .note {
+        .custom {
+        border-top: 1px solid #dadce0;
+        margin-top: 14px;
+        padding-top: 12px;
+      }
+
+      .custom-label {
+        color: #5f6368;
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .custom-row {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .custom-row input {
+        border: 1px solid #d8dee9;
+        border-radius: 6px;
+        flex: 1;
+        font-size: 13px;
+        min-width: 0;
+        padding: 8px 10px;
+      }
+
+      .custom-row button {
+        margin-top: 0;
+        width: auto;
+      }
+
+      .custom-status {
+        border-radius: 6px;
+        font-size: 12px;
+        margin-top: 8px;
+        padding: 8px;
+      }
+
+      .custom-status[data-ok="true"] {
+        background: #e6f4ea;
+        color: #137333;
+      }
+
+      .custom-status[data-ok="false"] {
+        background: #fef7e0;
+        color: #8a4b00;
+      }
+
+      .custom-sites {
+        list-style: none;
+        margin: 8px 0 0;
+        padding: 0;
+      }
+
+      .custom-sites li {
+        align-items: center;
+        display: flex;
+        gap: 8px;
+        justify-content: space-between;
+        margin-top: 6px;
+      }
+
+      .custom-sites span {
+        font-size: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .custom-sites button {
+        background: #f1f3f4;
+        color: #3f454b;
+        font-size: 12px;
+        margin-top: 0;
+        min-height: 30px;
+        width: auto;
+      }
+
+      .note {
           border-color: #3c4043;
           color: #bdc1c6;
         }
@@ -156,6 +316,15 @@
       <p class="privacy">Checks the open message locally. No attachments, inbox history, or email upload.</p>
       <button id="enable-mail" type="button">Turn on mail warnings</button>
       <div id="status" class="status" data-state="needs-permission">Mail warnings are off until you allow webmail access.</div>
+      <div class="custom">
+        <label for="custom-site-input" class="custom-label">Add another webmail site</label>
+        <div class="custom-row">
+          <input id="custom-site-input" type="url" placeholder="https://mail.example.com" autocomplete="off">
+          <button id="add-custom-site" type="button">Add</button>
+        </div>
+        <div id="custom-site-status" class="custom-status" hidden></div>
+        <ul id="custom-sites" class="custom-sites"></ul>
+      </div>
       <p class="note">Chrome asks for webmail access so Phish Guard can add warnings to the mail pages. It does not edit, delete, send, or report emails.</p>
     </main>
     <script type="module" src="./popup.js"></script>

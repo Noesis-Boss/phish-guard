@@ -5,6 +5,7 @@ import {
   hasGmailPermission,
   hasMailPermission,
   mailPermissionRequest,
+  ensureCustomPlatformsRegistered,
   registerGmailProtection,
   registerMailProtection,
   type ExtensionChromeApi
@@ -16,6 +17,7 @@ if (typeof chrome !== "undefined") {
   chrome.permissions.contains(mailPermissionRequest()).then(async (granted) => {
     if (!granted) return;
     await registerMailProtection(chrome.scripting);
+    await ensureCustomPlatformsRegistered(chrome.scripting);
     await activateOpenMailTabs(chrome);
   }).catch(() => undefined);
 

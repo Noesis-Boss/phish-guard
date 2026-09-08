@@ -1,7 +1,11 @@
 import {
   activateOpenMailTabs,
+  addCustomMailPlatform,
+  customPlatformFromOriginInput,
   hasMailPermission,
+  listCustomMailPlatforms,
   registerMailProtection,
+  removeCustomMailPlatform,
   requestMailPermission,
   type ExtensionChromeApi
 } from "../background/permissions.js";
@@ -65,7 +69,7 @@ export async function enableMailProtection(api: ExtensionChromeApi): Promise<Pop
 }
 
 function render(view: PopupView): void {
-  const button = document.querySelector<HTMLButtonElement>("#enable-gmail");
+  const button = document.querySelector<HTMLButtonElement>("#enable-mail");
   const status = document.querySelector<HTMLElement>("#status");
   if (!button || !status) return;
 
@@ -85,12 +89,79 @@ async function init(): Promise<void> {
   const initialState: PopupState = hasPermission ? "ready" : "needs-permission";
   render(popupViewForState(initialState));
 
-  document.querySelector<HTMLButtonElement>("#enable-gmail")?.addEventListener("click", async () => {
+  document.querySelector<HTMLButtonElement>("#enable-mail")?.addEventListener("click", async () => {
     render(popupViewForState("busy"));
     render(popupViewForState(await enableMailProtection(chrome)));
   });
 }
 
+function siteLabelFromOrigin(originPattern: string): string {
+  try {
+    return new URL(originPattern.replace(/\/\*$/, "/")).hostname;
+  } catch {
+    return originPattern;
+  }
+}
+
+function setCustomStatus(message: string, ok: boolean): void {
+  const status = document.querySelector<HTMLElement>("#custom-site-status");
+  if (!status) return;
+  status.textContent = message;
+  status.dataset.ok = ok ? "true" : "false";
+  status.hidden = false;
+}
+
+async function renderCustomSites(): Promise<void> {
+  const list = document.querySelector<HTMLUListElement>("#custom-sites");
+  if (!list) return;
+  const platforms = await listCustomMailPlatforms(chrome.scripting);
+  list.textContent = "";
+  for (const platform of platforms) {
+    const item = document.createElement("li");
+    const label = document.createElement("span");
+    label.textContent = siteLabelFromOrigin(platform.originPattern);
+    label.title = platform.originPattern;
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.textContent = "Remove";
+    remove.addEventListener("click", async () => {
+      await removeCustomMailPlatform(chrome.scripting, chrome.permissions, platform.id);
+      await renderCustomSites();
+    });
+    item.append(label, remove);
+    list.append(item);
+  }
+}
+
+async function initCustomSites(): Promise<void> {
+  await renderCustomSites();
+
+  const input = document.querySelector<HTMLInputElement>("#custom-site-input");
+  const add = document.querySelector<HTMLButtonElement>("#add-custom-site");
+  if (!input || !add) return;
+
+  add.addEventListener("click", async () => {
+    if (!customPlatformFromOriginInput(input.value)) {
+      setCustomStatus("Enter the site's web address, like https://mail.example.com.", false);
+    } else {
+      setCustomStatus("Asking Chrome for access...", true);
+      try {
+        const platform = await addCustomMailPlatform(chrome, input.value);
+        if (platform) {
+          input.value = "";
+          setCustomStatus("Warnings are on for that site.", true);
+        } else {
+          setCustomStatus("Access was not granted. Nothing changed.", false);
+        }
+      } catch {
+        setCustomStatus("Chrome could not add that site. Nothing changed.", false);
+      }
+    }
+    await renderCustomSites();
+  });
+}
+
 if (typeof document !== "undefined") {
   init().catch(() => render(popupViewForState("denied")));
+  initCustomSites().catch(() => undefined);
 }

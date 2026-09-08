@@ -19,7 +19,8 @@ function fakeChrome(granted: boolean): ExtensionChromeApi {
       request: vi.fn(async (request) => {
         expect(request.origins).toEqual(mailOrigins);
         return granted;
-      })
+      }),
+      remove: vi.fn(async () => true)
     },
     scripting: {
       registerContentScripts: vi.fn(async () => undefined),

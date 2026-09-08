@@ -43,7 +43,7 @@ Gmail, Outlook, Yahoo Mail, and Proton Mail are supported today.
 
 ### Other webmail providers
 
-Because each platform has its own reader, new ones can be added without touching the detection logic. Any webmail that renders messages in the page (Zoho, Fastmail, Roundcube, self-hosted webmail) can be supported with a small per-platform file that locates the open message's sender, subject, and body in that site's HTML. If you use a provider not listed here, open an issue with the message-view HTML (redact personal details) and a reader can be added.
+You do not have to wait for a reader. The popup has an **Add another webmail site** box: paste any webmail URL (for example `https://mail.zoho.com` or a self-hosted Roundcube or Fastmail address), click Add, and grant access. Phish Guard injects a generic reader on that site that locates the open message's sender, subject, and body by common conventions, and the same warning banner applies. Added sites are remembered across sessions and can be removed from the popup. Because generic readers rely on convention rather than site-specific code, coverage on an unknown site is best-effort - open an issue with the message-view HTML (redact personal details) and a dedicated reader can be added.
 
 ## Private and local first
 
